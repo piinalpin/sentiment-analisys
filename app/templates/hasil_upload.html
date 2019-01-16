@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% include "head.html" %}
+</head>
+
+<body class="fix-header fix-sidebar">
+    <!-- Preloader - style you can find in spinners.css -->
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+			<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+    </div>
+    <!-- Main wrapper  -->
+    <div id="main-wrapper">
+        <!-- header header  -->
+        {% include "navbar.html" %}
+        <!-- End header header -->
+        <!-- Left Sidebar  -->
+        {% include "sidebar.html" %}
+        <!-- End Left Sidebar  -->
+        <!-- Page wrapper  -->
+        <div class="page-wrapper">
+            <!-- Bread crumb -->
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-primary">Analisa Sentimen</h3> </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Data</a></li>
+                        <li class="breadcrumb-item active">Hasil Prediksi</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- End Bread crumb -->
+            <!-- Container fluid  -->
+            <div class="container-fluid">
+                <!-- Start Page Content -->
+                <div class="row">
+                    <div class="col-lg-12">
+                      <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title m-t-15">Hasil Prediksi</h3>
+                                <div class="table-responsive m-t-40" style="overflow: auto;height: 300px;">
+                                    {% for table in tables %}
+                                        {{ table|safe }}
+                                    {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+				        </div>
+                <!-- End PAge Content -->
+            </div>
+            <!-- End Container fluid  -->
+            <!-- footer -->
+            {% include "footer.html" %}
+            <!-- End footer -->
+        </div>
+        <!-- End Page wrapper  -->
+    </div>
+    <!-- End Wrapper -->
+    <!-- All Jquery -->
+    {% include "script.html" %}
+</body>
+
+</html>

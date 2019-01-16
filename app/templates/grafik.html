@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% include "head.html" %}
+    <style>
+    #legend span {
+        width: 20px;
+        height: 20px;
+        position: relative;
+        margin: 10px;
+    }
+    #legend span:after {
+        padding-left: 4px;
+
+    }
+</style>
+</head>
+
+<body class="fix-header fix-sidebar">
+    <!-- Preloader - style you can find in spinners.css -->
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+			<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+    </div>
+    <!-- Main wrapper  -->
+    <div id="main-wrapper">
+        <!-- header header  -->
+        {% include "navbar.html" %}
+        <!-- End header header -->
+        <!-- Left Sidebar  -->
+        {% include "sidebar.html" %}
+        <!-- End Left Sidebar  -->
+        <!-- Page wrapper  -->
+        <div class="page-wrapper">
+            <!-- Bread crumb -->
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-primary">Grafik Sentimen Mahasiswa</h3> </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Data</a></li>
+                        <li class="breadcrumb-item active">Grafik</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- End Bread crumb -->
+            <!-- Container fluid  -->
+            <div class="container-fluid">
+                <!-- Start Page Content -->
+                <div class="row">
+                    <div class="col-lg-12">
+                      <div class="card">
+                                <div class="card-body">
+                                    <div id="morris-area-chart"></div>
+                                    <div id="legend">
+                                        <div class="row">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+				        </div>
+                <!-- End PAge Content -->
+            </div>
+            <!-- End Container fluid  -->
+            <!-- footer -->
+            {% include "footer.html" %}
+            <!-- End footer -->
+        </div>
+        <!-- End Page wrapper  -->
+    </div>
+    <!-- End Wrapper -->
+    <!-- All Jquery -->
+    {% include "script.html" %}
+    <script type="text/javascript">
+        var chart = Morris.Area( {
+        element: 'morris-area-chart',
+        data: [ 
+                {% for i in range(n) %}
+                {
+                    tahun: "{{ year[i] }}",
+                    positif: {{ pos[i] }},
+                    netral: {{ net[i] }},
+                    negatif: {{ neg[i] }}
+                },
+                {% endfor %}
+        ],
+        xkey: 'tahun',
+        ykeys: [ 'positif', 'netral', 'negatif' ],
+        labels: [ 'Sentimen Positif (%)', 'Sentimen Netral (%)', 'Sentimen Negatif (%)' ],
+        pointSize: 3,
+        fillOpacity: 0,
+        pointStrokeColors: [ '#26DAD2', '#f4e542', '#fc6180' ],
+        behaveLikeLine: true,
+        gridLineColor: '#e0e0e0',
+        lineWidth: 3,
+        hideHover: 'auto',
+        lineColors: [ '#26DAD2', '#f4e542', '#fc6180' ],
+        resize: true,
+        parseTime: false,
+    } );
+        chart.options.labels.forEach(function(label, i){
+    var legendItem = $('<span class="label label-rouded"></span>').css('background-color', chart.options.lineColors[i])
+    var legendItem2 = $('<a style="margin-right:10px;"></a>').css('color', '#666').text(': '+label)
+    $('#legend').append(legendItem,legendItem2)
+})
+    </script>
+</body>
+
+</html>
