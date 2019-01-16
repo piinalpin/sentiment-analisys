@@ -23,7 +23,7 @@ in the range of quality classifier have interpretation near prefect performance.
 __Keywords__ : sentiment analysis, text mining, k-fold cross validation, kappa statistic, naïve bayes
 
 
-My Journal : (https://drive.google.com/file/d/1wQs494W3F-sb6b6pRYQammwNsBNH6yeZ/view?usp=sharing)
+My Journal : https://drive.google.com/file/d/1wQs494W3F-sb6b6pRYQammwNsBNH6yeZ/view?usp=sharing
 
 ## Authors
 
