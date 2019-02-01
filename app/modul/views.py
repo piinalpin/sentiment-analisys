@@ -1,14 +1,9 @@
 from flask import render_template, request #buat memanggil .html
 from app import app
-from openpyxl import load_workbook
 import pandas as pd
 import os
 import numpy as np
-import dbmodel as database
-import xlrd
-import json
-import plotly
-import string
+from .dbmodel import *
 import pickle
 import csv
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -43,8 +38,8 @@ def upload_hasil():
         sem = request.form['semester']
         a.save(os.path.join('app/upload_data', 'DATA.csv')) #wadah untuk setiap kita nge-load, hasilnya disimpan disitu
         dataku = pd.read_csv('app/upload_data/DATA.csv')
-        load_vectorizer = pickle.load(open("app/upload_data/vectorizer.b", "rb"))
-        load_naivebayes = pickle.load(open("app/upload_data/nb.b", "rb"))
+        load_vectorizer = pickle.load(open("app/upload_data/vectorizer.b", "rb"), encoding='latin1')
+        load_naivebayes = pickle.load(open("app/upload_data/nb.b", "rb"), encoding='latin1')
         pegawai = [str(x) for x in list(dataku["pegawai_id_pegawai"])]
         ampu = [str(x) for x in list(dataku["ampu_id_ampu"])]
         baku = [x for x in katabaku["kata_baku"]]
@@ -58,9 +53,8 @@ def upload_hasil():
             return unique_list
         listStemUji = []
         for low in dataku.answer:
-            lowerku = low.lower().decode('utf-8')
-            a = lowerku.encode("ascii","ignore")
-            textStemmed = stemmer.stem(a)
+            lowerku = low.lower()
+            textStemmed = stemmer.stem(lowerku)
             textClean = remover.remove(textStemmed)
             n = 0
             for i in katabaku["vocabulary"]:
@@ -79,7 +73,7 @@ def upload_hasil():
         for i in range(0, len(dataku)):
             index = pegawai[i]+','+ampu[i]
             save_index.append(index)
-            new_data.append([index,[data_sentimen[i]]])
+            new_data.append([index, [data_sentimen[i]]])
         new_data = unique(new_data)
 
         clean_index = list(set(save_index))
@@ -115,22 +109,21 @@ def upload_hasil():
         rataNEG = round(float(totalPrecentNegative)/len(clean_index),2)
 
         data_final = []
-        sentimenFakultas = []
         for i in data_gue:
             n = i[0].split(',')
             data_final.append([n[0],n[1],i[1],i[2],i[3]])
-        print data_final
+        print(data_final)
         framegue = pd.DataFrame.from_dict(data_final)
         framegue.columns = ['Id Dosen','Id Mata Kuliah', 'Sentimen Positif (%)', 'Sentimen Netral (%)', 'Sentimen Negatif (%)']
 
-        dbmodel = database.DBModel() #memanggil file model dimodel class DBModel
-        namaTabel = str(ta)+'_'+str(sem)
+        tahun_ajaran = str(ta)+'_'+str(sem)
         namaFile = 'app/db/'+str(ta)+'_'+str(sem)+'.csv'
-        sentimenFakultas.append([namaTabel,rataPOS,rataNET, rataNEG])
-        frameSent = pd.DataFrame.from_dict(sentimenFakultas)
-        frameSent.columns = ['Tahun Ajaran', 'Sentimen Positif','Sentimen Netral', 'Sentimen Negatif']
-        framegue.to_csv(namaFile,quoting=csv.QUOTE_ALL, sep=',',escapechar='"',mode='w', header=True,index=False)
-        result_insert_table = dbmodel.insert_sentimenFakultas("Komentar", 'sentimenFakultas', frameSent)
+        try:
+            sentiment_obj = Sentiment(tahun_ajaran=tahun_ajaran, positive=rataPOS, neutral=rataNET, negative=rataNEG)
+            sentiment_obj.save()
+        except Exception as e:
+            print(e)
+        framegue.to_csv(namaFile,quoting=csv.QUOTE_ALL, sep=',', escapechar='"', mode='w', header=True, index=False)
     return render_template('hasil_upload.html', tables=[framegue.to_html(classes='table table-bordered')])
     # return "MAVERICK"
 
@@ -140,15 +133,13 @@ def Index():
 
 @app.route('/hasil_analisa', methods=['GET','POST'])
 def hasil():
-    dbmodel = database.DBModel()
-    ds = dbmodel.get_data_all("Komentar","sentimenFakultas")
+    sentiment_obj = Sentiment.getAll();
     tab = []
     nfile = []
-    for i in ds:
-        a = i.values()
-        nf = 'app/db/'+str(a[1])+'.csv'
+    for obj in sentiment_obj:
+        nf = 'app/db/'+str(obj.tahun_ajaran)+'.csv'
         nfile.append(nf)
-        tab.append(a[1])
+        tab.append(obj.tahun_ajaran)
     dtab = []
     for i in nfile:
         loadDB = pd.read_csv(i)
@@ -158,18 +149,16 @@ def hasil():
         a = pd.DataFrame(i)
         a.columns = ['Id Dosen','Id Mata Kuliah', 'Sentimen Positif (%)', 'Sentimen Netral (%)', 'Sentimen Negatif (%)']
         dftab.append(a)
-    print dtab
-    return render_template('hasil_analisa.html',tab=tab, dftab=dftab,n=len(tab))
+    print(dtab)
+    return render_template('hasil_analisa.html', tab=tab, dftab=dftab, n=len(tab))
 
 
 @app.route('/grafik', methods=['GET','POST'])
 def Grafik():
-    dbmodel = database.DBModel()
-    a = dbmodel.get_data_all("Komentar","sentimenFakultas")
+    sentiment_obj = Sentiment.getAll();
     tabel = []
-    for i in a:
-        j = i.values()
-        tabel.append([j[1],j[2],j[0],j[3]])
+    for obj in sentiment_obj:
+        tabel.append([obj.tahun_ajaran, obj.positive, obj.neutral, obj.negative])
     tabel
     year = []
     pos = []
