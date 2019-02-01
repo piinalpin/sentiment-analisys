@@ -50,7 +50,7 @@
                                         <div class="tab-content" style="width: 100%;">
                                             {% for i in range(n) %}
                                             <div class="tab-pane" id="home{{ i }}" role="tabpanel">
-                                                <div class="table-responsive m-t-40" style="overflow: auto;height: 300px;">
+                                                <div class="table-responsive" style="overflow: auto;height: 300px;">
                                                     {{
                                                         dftab[i].to_html(classes='table table-bordered')|safe
                                                     }}
