@@ -1,30 +1,28 @@
-from pymongo import MongoClient
+from app import db
 
-class DBModel:
 
-	client = MongoClient()
+class Sentiment(db.Model):
+    __tablename__ = 'sentiment'
 
-	def insert_data(self, database, collection, documents):
-		db = self.client[database]
-		db[collection].drop()
-		results = db[collection].insert_many(documents.to_dict('records'))
+    id = db.Column(db.Integer, unique=True, primary_key=True, nullable=False)
+    tahun_ajaran = db.Column(db.String, nullable=False)
+    positive = db.Column(db.Float, nullable=False)
+    neutral = db.Column(db.Float, nullable=False)
+    negative = db.Column(db.Float, nullable=False)
 
-		return results.inserted_ids
+    def __init__(self, tahun_ajaran, positive, neutral, negative):
+        self.tahun_ajaran = tahun_ajaran
+        self.positive = positive
+        self.neutral = neutral
+        self.negative = negative
 
-	def get_data_all(self, database, collection):
-		db = self.client[database]
-		cursor = db[collection].find({},{"_id":0})
+    def __repr__(self):
+        return "<Tahun Ajaran: {}".format(self.tahun_ajaran)
 
-		return cursor
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
 
-	def insert_sentimenFakultas(self, database, collection, documents):
-		db = self.client[database]
-		results = db[collection].insert_many(documents.to_dict('records'))
-
-		return results.inserted_ids
-
-	def get_hasil(self, database, collection):
-		db = self.client[database]
-		cursor = db[collection].find({})
-
-		return cursor
+    @staticmethod
+    def getAll():
+        return Sentiment.query.all()
