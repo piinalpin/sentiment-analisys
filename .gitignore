@@ -1,0 +1,26 @@
+# Created by https://www.gitignore.io/api/osx,venv,macos,linux,python,django,pycharm,virtualenv
+
+### Flask ###
+__pycache__/
+venv/
+.idea
+migrations/
+#2012_Ganjil_100.csv
+#2012_Genap_100.csv
+#2013_Ganjil_100.csv
+#2013_Genap_100.csv
+#2014_Ganjil_100.csv
+#2014_Genap_100.csv
+#2015_Ganjil_100.csv
+#2015_Genap_100.csv
+#2016_Ganjil_100.csv
+#2016_Genap_100.csv
+#Backup_Vaive_Bayes.docx
+#data_uji.csv
+#data_uji_final.csv
+#dataset.xlsx
+#datasetku_3.csv
+#update_data_uji_1600to1700.csv
+#update_data_uji_1700to1800.csv
+#update_data_uji_1800to1900.csv
+#update_data_uji_1900to2000.csv
