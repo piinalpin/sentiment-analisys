@@ -15,16 +15,21 @@ vectorizer = TfidfVectorizer()
 naivebayes = MultinomialNB()
 stemmer = StemmerFactory().create_stemmer()
 remover = StopWordRemoverFactory().create_stop_word_remover()
+
 katabaku = pd.read_csv('app/upload_data/vocab_katabaku.csv')
 data_training = pd.read_csv("app/upload_data/update_dataset_raw.csv")
-X = vectorizer.fit_transform(data_training.preprocessing_result.values.astype('U'))
-naivebayes.fit(X, data_training.sentimen)
-vectorizer_file = open("app/pickle_load/vectorizer.b", "wb")
-pickle.dump(vectorizer, vectorizer_file)
-nb_file = open("app/pickle_load/nb.b", "wb")
-pickle.dump(naivebayes, nb_file)
-vectorizer_file.close()  # close it to make sure it's all been written
-nb_file.close()  # close it to make sure it's all been written
+
+#############################################################################
+#  PROCESS TO CREATE DATASET FOR VECTORIZER AND FIT NAIVE BAYES WITH B FILE #
+#############################################################################
+# X = vectorizer.fit_transform(data_training.preprocessing_result.values.astype('U'))
+# naivebayes.fit(X, data_training.sentimen)
+# vectorizer_file = open("app/pickle_load/vectorizer.b", "wb")
+# pickle.dump(vectorizer, vectorizer_file)
+# nb_file = open("app/pickle_load/nb.b", "wb")
+# pickle.dump(naivebayes, nb_file)
+# vectorizer_file.close()  # close it to make sure it's all been written
+# nb_file.close()  # close it to make sure it's all been written
 
 
 @app.route('/upload', methods=['GET', 'POST'])
