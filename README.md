@@ -25,6 +25,25 @@ __Keywords__ : sentiment analysis, text mining, k-fold cross validation, kappa s
 
 My Journal : https://drive.google.com/file/d/1wQs494W3F-sb6b6pRYQammwNsBNH6yeZ/view?usp=sharing
 
+### Prerequisities
+Make sure you have installed Python 3 and virtualenv on your device
+
+### Step to run Sentiment Analysis System
+1. Create virtual environment `virtualenv venv`
+2. Activate your virtual environment
+  - On Windows > `venv\Scripts\activate`
+  - On Linux > `. env/bin/activate`
+3. Install the requirements `pip install -r requirements.txt`
+4. Create migration from flask migrate
+   ```
+   flask db init
+   flask db migrate
+   flask db upgrade
+   ```
+5. Run the application `python run.py` to activate debug mode or `flask run` to deactivate debug mode
+
+### Want to demo online?
+
 ## Authors
 
 * **Alvinditya Saputra** - *Initial work* - [DSS Consulting](https://dssconsulting.id/) - [LinkedIn](https://linkedin.com/in/piinalpin) [Instagram](https://www.instagram.com/piinalpin) [Twitter](https://www.twitter.com/piinalpin)
