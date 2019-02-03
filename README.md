@@ -44,6 +44,7 @@ Make sure you have installed Python 3 and virtualenv on your device
 
 ### Want to demo online?
 #### [Sentiment Analysis on Naive Bayes Method with Python 3](https://sentiment-analysis-naive-bayes.herokuapp.com/)
+
 ## Authors
 
 * **Alvinditya Saputra** - *Initial work* - [DSS Consulting](https://dssconsulting.id/) - [LinkedIn](https://linkedin.com/in/piinalpin) [Instagram](https://www.instagram.com/piinalpin) [Twitter](https://www.twitter.com/piinalpin)
