@@ -75,12 +75,12 @@ def upload_hasil():
 
         data_sentimen = []
 
-        tfidf = load_vectorizer.transform(data_training.preprocessing_result.astype('U'))
+        tfidf = load_vectorizer.transform(listStemUji)
         for i in tfidf:
             sentiment = load_naivebayes.predict(i)
             data_sentimen.append(sentiment)
         data_sentimen
-        for i in range(0, len(dataku)):
+        for i in range(0, len(dataku.answer)):
             index = pegawai[i] + ',' + ampu[i]
             save_index.append(index)
             new_data.append([index, [data_sentimen[i]]])
